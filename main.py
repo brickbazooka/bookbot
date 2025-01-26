@@ -1,40 +1,42 @@
-def get_file_contents(path):
+def _get_file_content(path):
 	with open(path) as f:
 		return f.read()
 
-def get_num_words(txt):
-	return len(txt.split())
 
-def get_char_count(txt):
+def _get_char_count_map(text_content):
 	result = {}
-	for _char in txt:
-		char = _char.lower()
-		if(char not in result):
-			result[char] = 0
-		result[char] += 1
+	for char in text_content.lower():
+		result[char] = result.get(char, 0) + 1
 	return result
 
-def print_book_report(book_path):
-	text = get_file_contents(book_path)
-	num_words = get_num_words(text)
-	char_count = get_char_count(text)
-	
-	alpha_list = []
-	for char in char_count:
-		if char.isalpha():
-			alpha_list.append({ "char": char, "count": char_count[char] })
-	alpha_list.sort(reverse=True, key=lambda dict: dict["count"])
 
+def _process_content(text_content):
+	char_count_map = _get_char_count_map(text_content)
+
+	result = []
+	for char in char_count_map:
+		if char.isalpha():
+			result.append({ "char": char, "count": char_count_map[char] })
+	result.sort(reverse=True, key=lambda dict: dict["count"])
+
+	return result
+
+
+def print_book_report(book_path):
+	text_content = _get_file_content(book_path)
+	num_words = len(text_content.split())
+	
+	processed_data = _process_content(text_content)
+
+	print("\n")
 	print(f"--- Begin report of {book_path} ---")
 	print(f"{num_words} words found in the document\n")
-	for letter in alpha_list:
-		char = letter["char"]
-		count = letter["count"]
+	for datum in processed_data:
+		char = datum["char"]
+		count = datum["count"]
 		print(f"The '{char}' character was found {count} times")
 	print("--- End report ---")
+	print("\n")
 
-def main():
-	book_path = "books/frankenstein.txt"
-	print_book_report(book_path)
 
-main()
+print_book_report("./books/frankenstein.txt")
