@@ -16,14 +16,14 @@ def print_book_report(book_path):
 	sorted_char_list = get_sorted_char_list(char_count_dict)
 
 	print("============ BOOKBOT ============")
-	print(f"Analyzing the book found at {book_path}")
+	print(f"Analyzing the book found at:\n- {book_path}")
 	print("----------- Word Count ----------")
 	print(f"Found {num_words} total words")
 	print("----------- Char Count ----------")
 	for datum in sorted_char_list:
 		char, count = datum["char"], datum["count"]
 		if char.isalpha():
-			print(f"'{char}': {count}")
+			print(f"{char}: {count}")
 	print("============= END ===============")
 
 
